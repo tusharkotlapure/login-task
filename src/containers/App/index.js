@@ -1,19 +1,66 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Row, Col } from 'reactstrap';
+import { AppTitle } from '../../components/AppTitle';
+import TaskList from '../../components/TaskList';
 import './App.css';
 
 class App extends Component {
+  state = {
+    taskList: [
+      {
+        id: 1,
+        name: "Task 1",
+        taskEnd: "ttttt",
+        taskDetails: "test test test test",
+        taskStatus: "Assigned"
+      },
+      {
+        id: 2,
+        name: "Task 2",
+        taskEnd: "ttttt",
+        taskDetails: "test test test test",
+        taskStatus: "Assigned"
+      },
+      {
+        id: 3,
+        name: "Task 3",
+        taskEnd: "ttttt",
+        taskDetails: "test test test test",
+        taskStatus: "Assigned"
+      },
+      {
+        id: 4,
+        name: "Task 4",
+        taskEnd: "ttttt",
+        taskDetails: "test test test test",
+        taskStatus: "Assigned"
+      }
+    ]
+  }
+
+  onEdit = () => {
+
+  };
+
+  onDelete = () => {
+
+  };
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <Row className="container-fluid">
+        <Col xs={12}>
+          <AppTitle
+            title="Task Manager App"
+            titleClass="text-center my-2" 
+          />
+          <TaskList
+            itemList={this.state.taskList}
+            onDelete={this.onDelete}
+            onEdit={this.onEdit} 
+          />
+        </Col>
+      </Row>
     );
   }
 }

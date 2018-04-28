@@ -2,21 +2,14 @@ import React from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
 
 class TaskDetails extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			itemData: props.itemData || { name: '', description: '', status: 'assigned', taskEnd: moment() },
-		};
-	}
 
-	handleDateTiimeChange = (taskEnd) => this.setState({ itemData: { ...this.state.itemData, taskEnd }});
+	handleDateTiimeChange = (taskEnd) => this.props.setTaskValues('taskEnd', taskEnd);
 
 	onChange = (e) => {
 		const { name, value } = e.target;
-		this.setState({ itemData: { ...this.state.itemData, [name]: value }})
+		this.props.setTaskValues(name, value);
 	}
 
 	render() {
@@ -29,7 +22,7 @@ class TaskDetails extends React.Component {
 
 		const {
 			itemData
-		} = this.state;
+		} = this.props;
 
 		return (
 			<Modal isOpen={isVisible} toggle={toggle} size="md">

@@ -2,7 +2,7 @@ import React from 'react';
 import TaskItem from '../TaskItem';
 import PropTypes from 'prop-types';
 
-const TaskList = ({itemList, onEdit, onDelete}) => 
+const TaskList = ({itemList, onEdit, onDelete}) =>
 	itemList.map(itemData => (
 		<TaskItem
 			key={itemData.id}

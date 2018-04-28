@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
@@ -10,34 +11,41 @@ import './App.css';
 
 class App extends Component {
   state = {
-    taskList: [],
     showTaskModal: false,
-    editTask: null,
     editMode: false,
   }
 
-  onEdit = (id) => this.setState({ editTask: this.state.taskList.find(data => data.id === id ), editMode: true, showTaskModal: true });
+  onEdit = (id) => {
+    this.props.setPrefillTaskData(this.props.taskList.find(data => data.id === id));
+    this.setState({ editMode: true, showTaskModal: true });
+  }
 
-  onDelete = (id) => this.setState({ taskList: this.state.taskList.filter(task => task.id !== id )});
-  
-  toggleCreateTask = () => this.setState(prevState => ({ showTaskModal: !prevState.showTaskModal, editMode: false }));
+  onDelete = (id) => this.props.updateTaskList(this.props.taskList.filter(task => task.id !== id ));
+
+  toggleCreateTask = () => {
+    this.props.resetTaskValues();
+    this.setState(prevState => ({ showTaskModal: !prevState.showTaskModal, editMode: false }));
+  }
 
   onSubmit = (itemData, isEdit) => {
+    const { updateTaskList, taskList, resetTaskValues } = this.props;
     if (!isEdit) {
-      this.setState({ 
-        taskList: this.state.taskList.concat({ ...itemData, id: this.state.taskList.length + 1, }),
+      updateTaskList(taskList.concat({ ...itemData, id: this.props.taskList.length + 1, }));
+      this.setState({
         showTaskModal: false
-      })
+      });
     } else {
-      const updatedTaskList = this.state.taskList.map(taskData => {
+      const updatedTaskList = taskList.map(taskData => {
         if (taskData.id === itemData.id) {
           return itemData;
         }
         return taskData
       });
 
-      this.setState({ 
-        taskList: updatedTaskList,
+      updateTaskList(updatedTaskList);
+      resetTaskValues();
+
+      this.setState({
         showTaskModal: false,
         editMode: false,
       });
@@ -46,13 +54,16 @@ class App extends Component {
 
   render() {
     const {
-      taskList,
       editMode,
-      editTask,
       showTaskModal,
     }=this.state;
 
-    console.log("props", this.props)
+    const {
+      taskList,
+      setTaskValues,
+      resetTaskValues,
+      taskDetail,
+    }=this.props;
 
     return (
       <Row className="container-fluid">
@@ -75,8 +86,10 @@ class App extends Component {
             <TaskDetails
               isVisible={showTaskModal}
               onSubmit={this.onSubmit}
+              resetTaskValues={resetTaskValues}
+              setTaskValues={setTaskValues}
               toggle={this.toggleCreateTask}
-              itemData={editTask}
+              itemData={taskDetail}
               isEdit={editMode}
             />
           </If>
@@ -89,7 +102,9 @@ class App extends Component {
 
 function mapStateToProps(state) {
   const {
-    taskList,
+    taskList: {
+      taskList
+    },
     taskDetail
   }=state;
   

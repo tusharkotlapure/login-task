@@ -19,6 +19,11 @@ export const setTaskValues = (name, value) => ({
     }
 });
 
+export const setPrefillTaskData = (payload) => ({
+    type: constants.SET_PREFILL_TASK_DATA,
+    payload,
+});
+
 export const resetTaskValues = (name, value) => ({
     type: constants.RESET_TASK_VALUES,
 });

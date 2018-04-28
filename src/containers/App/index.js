@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Row, Col, Button } from 'reactstrap';
 import { AppTitle } from '../../components/AppTitle';
 import TaskList from '../../components/TaskList';
 import TaskDetails from '../../components/TaskDetailsModal';
 import If from '../../components/If';
-
+import * as actions from './actions';
 import './App.css';
 
 class App extends Component {
@@ -51,6 +52,8 @@ class App extends Component {
       showTaskModal,
     }=this.state;
 
+    console.log("props", this.props)
+
     return (
       <Row className="container-fluid">
         <Col xs={12}>
@@ -84,4 +87,15 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  const {
+    taskList,
+    taskDetail
+  }=state;
+  
+  return {
+    taskList,
+    taskDetail,
+  };
+}
+export default connect(mapStateToProps, { ...actions })(App);
